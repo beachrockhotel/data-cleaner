@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -37,8 +38,9 @@ func main() {
 		}
 
 		name := fixName(fields[0])
+		age := fixAge(fields[1])
 
-		result := fmt.Sprintf("%s|%s|%s|%s\n", name)
+		result := fmt.Sprintf("%s|%s|%s|%s\n", name, age)
 		writer.WriteString(result)
 	}
 	writer.Flush()
@@ -52,6 +54,20 @@ func fixName(input string) string {
 		return capitalize(matches[1]) + " " + capitalize(matches[2])
 	}
 	return ""
+}
+
+func fixAge(input string) string {
+	input = strings.TrimSpace(input)
+	re := regexp.MustCompile(`\d+`)
+	match := re.FindString(input)
+	if match == "" {
+		return ""
+	}
+	age, err := strconv.Atoi(match)
+	if err != nil || age < 1 || age > 120 {
+		return ""
+	}
+	return strconv.Itoa(age)
 }
 
 func capitalize(word string) string {
