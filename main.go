@@ -39,8 +39,9 @@ func main() {
 
 		name := fixName(fields[0])
 		age := fixAge(fields[1])
+		phone := fixPhone(fields[2])
 
-		result := fmt.Sprintf("%s|%s|%s|%s\n", name, age)
+		result := fmt.Sprintf("%s|%s|%s|%s\n", name, age, phone)
 		writer.WriteString(result)
 	}
 	writer.Flush()
@@ -68,6 +69,15 @@ func fixAge(input string) string {
 		return ""
 	}
 	return strconv.Itoa(age)
+}
+
+func fixPhone(input string) string {
+	re := regexp.MustCompile(`\d`)
+	digits := strings.Join(re.FindAllString(input, -1), "")
+	if len(digits) == 11 && strings.HasPrefix(digits, "7") {
+		return fmt.Sprintf("+7 (%s) %s-%s-%s", digits[1:4], digits[4:7], digits[7:9], digits[9:])
+	}
+	return ""
 }
 
 func capitalize(word string) string {
