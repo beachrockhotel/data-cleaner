@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
@@ -20,5 +21,13 @@ func main() {
 	}
 	defer outputFile.Close()
 
-	fmt.Println("Файлы открыты успешно.")
+	scanner := bufio.NewScanner(inputFile)
+	writer := bufio.NewWriter(outputFile)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		// Пока просто копируем
+		writer.WriteString(line + "\n")
+	}
+	writer.Flush()
 }
