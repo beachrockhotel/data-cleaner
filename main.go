@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -26,8 +27,22 @@ func main() {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		// Пока просто копируем
-		writer.WriteString(line + "\n")
+		fields := strings.Split(line, "|")
+
+		if len(fields) != 4 {
+			writer.WriteString("|||") // если формат неверный
+			writer.WriteString("\n")
+			continue
+		}
+
+		// Пока просто возвращаем поля как есть
+		name := fields[0]
+		age := fields[1]
+		phone := fields[2]
+		email := fields[3]
+
+		result := fmt.Sprintf("%s|%s|%s|%s\n", name, age, phone, email)
+		writer.WriteString(result)
 	}
 	writer.Flush()
 }
