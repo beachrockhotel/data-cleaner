@@ -40,8 +40,9 @@ func main() {
 		name := fixName(fields[0])
 		age := fixAge(fields[1])
 		phone := fixPhone(fields[2])
+		email := fixEmail(fields[3])
 
-		result := fmt.Sprintf("%s|%s|%s|%s\n", name, age, phone)
+		result := fmt.Sprintf("%s|%s|%s|%s\n", name, age, phone, email)
 		writer.WriteString(result)
 	}
 	writer.Flush()
@@ -76,6 +77,18 @@ func fixPhone(input string) string {
 	digits := strings.Join(re.FindAllString(input, -1), "")
 	if len(digits) == 11 && strings.HasPrefix(digits, "7") {
 		return fmt.Sprintf("+7 (%s) %s-%s-%s", digits[1:4], digits[4:7], digits[7:9], digits[9:])
+	}
+	return ""
+}
+
+func fixEmail(input string) string {
+	email := strings.TrimSpace(input)
+	email = strings.ReplaceAll(email, "..", ".")
+	email = strings.ReplaceAll(email, "@@", "@")
+
+	re := regexp.MustCompile(`^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,6}$`)
+	if re.MatchString(email) {
+		return email
 	}
 	return ""
 }
