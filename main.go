@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -30,19 +31,32 @@ func main() {
 		fields := strings.Split(line, "|")
 
 		if len(fields) != 4 {
-			writer.WriteString("|||") // если формат неверный
+			writer.WriteString("|||") // если строка сломана
 			writer.WriteString("\n")
 			continue
 		}
 
-		// Пока просто возвращаем поля как есть
-		name := fields[0]
-		age := fields[1]
-		phone := fields[2]
-		email := fields[3]
+		name := fixName(fields[0])
 
-		result := fmt.Sprintf("%s|%s|%s|%s\n", name, age, phone, email)
+		result := fmt.Sprintf("%s|%s|%s|%s\n", name)
 		writer.WriteString(result)
 	}
 	writer.Flush()
+}
+
+func fixName(input string) string {
+	input = strings.ReplaceAll(input, " ", "")
+	re := regexp.MustCompile(`^([А-ЯЁа-яё]+)([А-ЯЁа-яё]+)$`)
+	matches := re.FindStringSubmatch(input)
+	if len(matches) == 3 {
+		return capitalize(matches[1]) + " " + capitalize(matches[2])
+	}
+	return ""
+}
+
+func capitalize(word string) string {
+	if len(word) == 0 {
+		return ""
+	}
+	return strings.ToUpper(string(word[0])) + strings.ToLower(word[1:])
 }
