@@ -1,2 +1,3 @@
 ИванИванов|¬27|+7999000 1 1 11|example@@yandex..ru
 АннаПетрова|23|+7(999)0001111|anna.pet@example.com
+АлексейКовалев|35|+7 495 123 45 67|aleksei.kovalev@mail.ru
