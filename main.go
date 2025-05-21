@@ -48,6 +48,7 @@ func main() {
 	writer.Flush()
 }
 
+// Обработка имени и фамилии с помощью регулярных выражений
 func fixName(input string) string {
 	input = strings.ReplaceAll(input, " ", "")
 	re := regexp.MustCompile(`^([А-ЯЁа-яё]+)([А-ЯЁа-яё]+)$`)
